@@ -10,30 +10,31 @@ var keys = require("./keys.js");
 //Switch to run the different functions
 
 switch (process.argv[2]) {
-    
-// Twitter API Work
+
+    // Twitter API Work
     case "my-tweets":
         return fs.readFile("./keys.js", "utf8", function(error, data) {
 
             var client = new twitter(keys.twitter);
-            var params = {
-                jscagrcecrglw: 'nodejs'
-            };
-            client.get('statuses/user_timeline', params, function(error, tweets, response) {
+       
+            client.get('statuses/show/:jscagrcecrglw', function(error, tweets, response) {
                 if (!error) {
-                    console.log(text);
+                    console.log(tweets.text);
+                }
+                else {
+                    console.log ("no birds are singing today")
                 }
             });
         });
 
-//Spotify API Work
+        //Spotify API Work
     case "spotify-this-song":
         return fs.readFile("./keys.js", "utf8", function(error, data) {
             var spotify = new Spotify(keys.spotify);
             var tune = process.argv;
 
             var songName = "";
-    
+
             for (var i = 3; i < tune.length; i++) {
                 if (i > 3 && i < tune.length) {
                     songName = songName + "+" + tune[i];
@@ -56,12 +57,11 @@ switch (process.argv[2]) {
                 }
             });
         });
-//OMDb API Work
+
+        //OMDb API Work
     case "movie-this":
         var Args = process.argv;
-
         var movieName = "";
-
         for (var i = 3; i < Args.length; i++) {
             if (i > 3 && i < Args.length) {
                 movieName = movieName + "+" + Args[i];
@@ -70,10 +70,7 @@ switch (process.argv[2]) {
             }
         }
         var queryUrl = "http://www.omdbapi.com/?t=" + movieName + "&y=t&apikey=trilogy";
-
-
         console.log(queryUrl);
-
         request(queryUrl, function(error, response, body) {
             if (!error && response.statusCode === 200) {
                 console.log("Title: " + JSON.parse(body).Title);
@@ -86,9 +83,36 @@ switch (process.argv[2]) {
                 console.log("Actors: " + JSON.parse(body).Actors);
             }
         });
-    case 'do-what-it-says':
-        return fs.readFile("./random.txt", "utf8", function(error, data) {
-            var dataArr = data.split(":");
-});
+        // case 'do-what-it-says':
+        //     return fs.readFile("./random.txt", "utf8", function(error, data) {
+        //         var dataArr = data.split(":");
+        //         math.floor(math.random(dataArr.length))
+        //if (do-what-it-says === spotify-this-song I want it that way){
+        //return fs.readFile("./keys.js", "utf8", function(error, data) {
+        //     var spotify = new Spotify(keys.spotify);
+        //     var tune = process.argv;
+        //     var songName = "";
+        //     for (var i = 3; i < tune.length; i++) {
+        //         if (i > 3 && i < tune.length) {
+        //             songName = songName + "+" + tune[i];
+        //         } else {
+        //             songName += tune[i];
+        //         }
+        //     }
+        //     spotify.search({
+        //         type: 'track',
+        //         query: songName
+        //     }, function(err, data) {
+        //         if (!error) {
+        //             console.log('Artist: ' + data.tracks.items[0].artists[0].name);
+        //             console.log('Title: ' + data.tracks.items[0].name);
+        //             console.log('Album: ' + data.tracks.items[0].album.name);
+        //             console.log('Preview link: ' + data.tracks.items[0].preview_url);
+        //         } else {
+        //             console.log("I don't recognize that song")
+        //         }
+        //     });
+        // });
+        //}
 
 }
