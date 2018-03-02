@@ -30,9 +30,20 @@ switch (process.argv[2]) {
     case "spotify-this-song":
         return fs.readFile("./keys.js", "utf8", function(error, data) {
             var spotify = new Spotify(keys.spotify);
+            var tune = process.argv;
+
+            var songName = "";
+    
+            for (var i = 3; i < tune.length; i++) {
+                if (i > 3 && i < tune.length) {
+                    songName = songName + "+" + tune[i];
+                } else {
+                    songName += tune[i];
+                }
+            }
             spotify.search({
                 type: 'track',
-                query: process.argv[3]
+                query: songName
             }, function(err, data) {
 
                 if (!error) {
@@ -75,4 +86,9 @@ switch (process.argv[2]) {
                 console.log("Actors: " + JSON.parse(body).Actors);
             }
         });
+    case 'do-what-it-says':
+        return fs.readFile("./random.txt", "utf8", function(error, data) {
+            var dataArr = data.split(":");
+});
+
 }
